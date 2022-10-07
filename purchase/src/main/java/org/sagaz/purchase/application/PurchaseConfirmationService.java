@@ -17,6 +17,17 @@ public class PurchaseConfirmationService {
     public void confirm(UUID uuid) throws PurchaseNotFoundException {
         Purchase purchase = repository.findByUuid(uuid).orElseThrow(new PurchaseNotFoundException());
 
-        purchase.confirm();
+        purchase.confirm(false);
+
+        repository.save(purchase);
+    }
+
+    @Transactional
+    public void confirm(UUID uuid, Boolean errorMode) throws PurchaseNotFoundException {
+        Purchase purchase = repository.findByUuid(uuid).orElseThrow(new PurchaseNotFoundException());
+
+        purchase.confirm(errorMode);
+
+        repository.save(purchase);
     }
 }

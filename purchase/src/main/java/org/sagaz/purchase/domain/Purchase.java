@@ -39,7 +39,20 @@ public class Purchase extends AbstractAggregateRoot<Purchase> {
         this.name = name;
     }
 
-    public void confirm() {
+    public void confirm(Boolean errorMode) {
+        if (!this.confirmed) {
+            this.publishPurchaseConfirmedEvent(errorMode);
+        }
         this.confirmed = true;
+    }
+
+    public void unConfirm() {
+        this.confirmed = false;
+    }
+
+    public void publishPurchaseConfirmedEvent(Boolean errorMode) {
+        registerEvent(
+                new PurchaseConfirmedEvent(this.uuid, errorMode)
+        );
     }
 }
