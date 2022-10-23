@@ -11,19 +11,24 @@ import javax.transaction.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class PurchaseConfirmedEventSubscriber {
+public class PaymentCreatedEventSubscriber {
     private final DeliveryCreationService deliveryCreationService;
     private final RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(queues = "PurchaseConfirmedEvent.delivery")
+    @RabbitListener(queues = "PaymentCreatedEvent.delivery")
     @Transactional
-    public void subscribe(final PurchaseConfirmedEvent event) {
+    public void subscribe(final PaymentCreatedEvent event) {
         try {
             deliveryCreationService.create(event.purchaseUuid);
-            if (event.errorMode) throw new Error("Manually created Error");
+            if (event.errorMode == ErrorMode.DELIVERY_ERROR) throw new Error("Manually created Error");
 
         } catch (Error error) {
-            rabbitTemplate.convertAndSend("PurchaseConfirmedSubscribingFailedEvent", "#", event);
+            PaymentCreatedSubscribingFailedEvent failedEvent =
+                    new PaymentCreatedSubscribingFailedEvent(event.paymentUuid);
+            rabbitTemplate.convertAndSend(
+                    "PaymentCreatedSubscribingFailedEvent",
+                    "#", failedEvent
+            );
             throw new AmqpRejectAndDontRequeueException(error);
         }
     }

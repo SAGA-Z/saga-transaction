@@ -24,8 +24,9 @@ public class Delivery extends AbstractAggregateRoot<Delivery> {
     @Type(type = "uuid-char")
     @Column(nullable = false, unique = true)
     private final UUID uuid = UUID.randomUUID();
-
-    private UUID purchaseUuid;
+    @Type(type = "uuid-char")
+    private UUID paymentUuid;
+    private String receiverMessengerId;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus = DeliveryStatus.PREPARING;
@@ -36,12 +37,32 @@ public class Delivery extends AbstractAggregateRoot<Delivery> {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    public Delivery(UUID purchaseUuid) {
-        this.purchaseUuid = purchaseUuid;
+    public Delivery(
+            UUID paymentUuid,
+            String receiverMessengerId
+    ) {
+        this.paymentUuid = paymentUuid;
+        this.receiverMessengerId = receiverMessengerId;
     }
 
     public void deliver() {
+        if (deliveryStatus != DeliveryStatus.PREPARING)
+            throw new NotDeliverableException();
         this.deliveryStatus = DeliveryStatus.DELIVERING;
+//        this.publishDeliveringEvent();
+    }
+
+    public void prepare() {
+        this.deliveryStatus = DeliveryStatus.PREPARING;
+    }
+
+    public void publishDeliveringEvent() {
+        registerEvent(
+                new DeliveringEvent(
+                        this.uuid,
+                        this.receiverMessengerId
+                )
+        );
     }
 
     public void delivered() {

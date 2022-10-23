@@ -17,7 +17,7 @@ public class DeliveryStatusModificationService {
     public void deliver(UUID uuid) throws DeliveryNotFoundException {
         Delivery delivery = repository.findByUuid(uuid).orElseThrow(new DeliveryNotFoundException());
 
-        delivery.delivered();
+        delivery.deliver();
 
         repository.save(delivery);
     }

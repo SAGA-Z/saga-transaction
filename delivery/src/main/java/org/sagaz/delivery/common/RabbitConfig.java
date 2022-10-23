@@ -15,24 +15,47 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
     @Bean
-    Queue purchaseConfirmedEventQueue() {
-        return new Queue("PurchaseConfirmedEvent.delivery", false);
-    }
-    @Bean
-    TopicExchange purchaseConfirmedEventTopicExchange() {
-        return new TopicExchange("PurchaseConfirmedEvent");
+    Queue PaymentCreatedEventQueue() {
+        return new Queue("PaymentCreatedEvent.delivery", false);
     }
 
     @Bean
-    TopicExchange PurchaseConfirmedSubscribingFailedEventTopicExchange() {
-        return new TopicExchange("PurchaseConfirmedSubscribingFailedEvent");
+    Queue deliveringSubscribingFailedEventQueue()
+    {
+        return new Queue("DeliveringSubscribingFailedEvent.delivery", false);
+    }
+    @Bean
+    TopicExchange PaymentCreatedEventTopicExchange() {
+        return new TopicExchange("PaymentCreatedEvent");
     }
 
     @Bean
-    Binding purchaseConfirmedEventBinding() {
+    TopicExchange paymentCreatedSubscribingFailedEventTopicExchange() {
+        return new TopicExchange("PaymentCreatedSubscribingFailedEvent");
+    }
+
+    @Bean
+    TopicExchange deliveringSubscribingFailedEventTopicExchange() {
+        return new TopicExchange("DeliveredSubscribingFailedEvent");
+    }
+
+    @Bean
+    TopicExchange deliveringEventTopicExchange() {
+        return new TopicExchange("DeliveringEvent");
+    }
+
+    @Bean
+    Binding PaymentCreatedEventBinding() {
         return BindingBuilder
-                .bind(this.purchaseConfirmedEventQueue())
-                .to(this.purchaseConfirmedEventTopicExchange()).with("#");
+                .bind(this.PaymentCreatedEventQueue())
+                .to(this.PaymentCreatedEventTopicExchange()).with("#");
+    }
+
+    @Bean
+    Binding deliveringSubscribingFailedEventBinding() {
+        return BindingBuilder
+                .bind(this.deliveringSubscribingFailedEventQueue())
+                .to(this.deliveringSubscribingFailedEventTopicExchange()).with("#");
     }
 
     @Bean
@@ -40,10 +63,14 @@ public class RabbitConfig {
             ConnectionFactory connectionFactory
     ) {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
-        rabbitAdmin.declareExchange(this.purchaseConfirmedEventTopicExchange());
-        rabbitAdmin.declareQueue(this.purchaseConfirmedEventQueue());
-        rabbitAdmin.declareBinding(this.purchaseConfirmedEventBinding());
-        rabbitAdmin.declareExchange(this.PurchaseConfirmedSubscribingFailedEventTopicExchange());
+        rabbitAdmin.declareExchange(this.PaymentCreatedEventTopicExchange());
+        rabbitAdmin.declareExchange(this.paymentCreatedSubscribingFailedEventTopicExchange());
+        rabbitAdmin.declareExchange(this.deliveringEventTopicExchange());
+        rabbitAdmin.declareExchange(this.deliveringSubscribingFailedEventTopicExchange());
+        rabbitAdmin.declareQueue(this.PaymentCreatedEventQueue());
+        rabbitAdmin.declareQueue(this.deliveringSubscribingFailedEventQueue());
+        rabbitAdmin.declareBinding(this.PaymentCreatedEventBinding());
+        rabbitAdmin.declareBinding(this.deliveringSubscribingFailedEventBinding());
         return rabbitAdmin;
     }
 

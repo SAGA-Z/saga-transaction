@@ -1,6 +1,6 @@
 spring:
   application:
-    name: purchase
+    name: delivery
   datasource:
     url: jdbc:mysql://localhost:3306/delivery
     username: sagaz
