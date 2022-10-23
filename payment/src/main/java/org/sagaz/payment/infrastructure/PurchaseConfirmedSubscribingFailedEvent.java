@@ -1,4 +1,4 @@
-package org.sagaz.delivery.infrastructure;
+package org.sagaz.payment.infrastructure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
