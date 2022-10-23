@@ -1,6 +1,7 @@
 package org.sagaz.purchase.application;
 
 import lombok.RequiredArgsConstructor;
+import org.sagaz.purchase.domain.ErrorMode;
 import org.sagaz.purchase.domain.Purchase;
 import org.sagaz.purchase.domain.PurchaseRepository;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,13 @@ public class PurchaseConfirmationService {
     public void confirm(UUID uuid) throws PurchaseNotFoundException {
         Purchase purchase = repository.findByUuid(uuid).orElseThrow(new PurchaseNotFoundException());
 
-        purchase.confirm(false);
+        purchase.confirm(ErrorMode.NO_ERROR);
 
         repository.save(purchase);
     }
 
     @Transactional
-    public void confirm(UUID uuid, Boolean errorMode) throws PurchaseNotFoundException {
+    public void confirm(UUID uuid, ErrorMode errorMode) throws PurchaseNotFoundException {
         Purchase purchase = repository.findByUuid(uuid).orElseThrow(new PurchaseNotFoundException());
 
         purchase.confirm(errorMode);

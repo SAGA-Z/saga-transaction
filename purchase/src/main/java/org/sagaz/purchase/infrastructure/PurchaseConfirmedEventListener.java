@@ -3,6 +3,7 @@ package org.sagaz.purchase.infrastructure;
 import lombok.RequiredArgsConstructor;
 import org.sagaz.purchase.domain.PurchaseConfirmedEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 

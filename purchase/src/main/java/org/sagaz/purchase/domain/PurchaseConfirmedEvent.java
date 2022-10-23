@@ -7,5 +7,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PurchaseConfirmedEvent {
     public UUID purchaseUuid;
-    public Boolean errorMode = false;
+    public ErrorMode errorMode;
 }
