@@ -15,7 +15,7 @@ public class DeliveryCreationService {
     private final DeliveryRepository repository;
 
     @Transactional
-    public Delivery create(UUID purchaseUuid) {
+    public Delivery create(UUID purchaseUuid) { // 여기 payment가 와야함!
         Delivery delivery = new Delivery(purchaseUuid, createRandomMessengerId());
 
         return repository.save(delivery);

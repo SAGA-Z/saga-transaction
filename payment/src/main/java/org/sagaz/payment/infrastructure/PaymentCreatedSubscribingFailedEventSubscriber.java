@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class PaymentCreatedSubscribingFailedEventSubscriber {
     private final PaymentRepository repository;
     private final RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(queues = "PaymentCreatedSubscribingFailedEvent.payment")
+    //@RabbitListener(queues = "PaymentCreatedSubscribingFailedEvent.payment")
     @Transactional
     public void subscribe(final PaymentCreatedSubscribingFailedEvent event) {
         System.out.println("Event Subscribing Failed");

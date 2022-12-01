@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: orchestrator
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/payment
+#    username: sagaz
+#    password: havasagaz
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+server:
+  port: 8004
+
+service:
+  endpoints:
+    payment: http://localhost:8003
+    delivery: http://localhost:8002

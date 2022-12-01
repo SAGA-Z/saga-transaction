@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     Optional<Payment> findByUuid(UUID uuid);
+
+    Optional<Payment> findByPurchaseUuid(UUID purchaseUuid);
 }

@@ -15,7 +15,7 @@ public class PaymentCreatedEventSubscriber {
     private final DeliveryCreationService deliveryCreationService;
     private final RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(queues = "PaymentCreatedEvent.delivery")
+    //@RabbitListener(queues = "PaymentCreatedEvent.delivery")
     @Transactional
     public void subscribe(final PaymentCreatedEvent event) {
         try {

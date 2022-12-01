@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class PurchaseConfirmedEventSubscriber {
     private final PaymentCreationService paymentCreationService;
     private final RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(queues = "PurchaseConfirmedEvent.payment")
+    //@RabbitListener(queues = "PurchaseConfirmedEvent.payment")
     @Transactional
     public void subscribe(final PurchaseConfirmedEvent event) {
         try {

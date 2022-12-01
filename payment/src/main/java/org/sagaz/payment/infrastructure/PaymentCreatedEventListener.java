@@ -13,6 +13,6 @@ public class PaymentCreatedEventListener {
 
     @TransactionalEventListener
     public void handle(PaymentCreatedEvent event) {
-        rabbitTemplate.convertAndSend("PaymentCreatedEvent", "#", event);
+        //rabbitTemplate.convertAndSend("PaymentCreatedEvent", "#", event);
     }
 }

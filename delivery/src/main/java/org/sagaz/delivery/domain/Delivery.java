@@ -24,8 +24,11 @@ public class Delivery extends AbstractAggregateRoot<Delivery> {
     @Type(type = "uuid-char")
     @Column(nullable = false, unique = true)
     private final UUID uuid = UUID.randomUUID();
+    //@Type(type = "uuid-char")
+    //private UUID paymentUuid;
     @Type(type = "uuid-char")
-    private UUID paymentUuid;
+    private UUID purchaseUuid;
+
     private String receiverMessengerId;
 
     @Enumerated(EnumType.STRING)
@@ -38,10 +41,10 @@ public class Delivery extends AbstractAggregateRoot<Delivery> {
     private LocalDateTime modifiedDate;
 
     public Delivery(
-            UUID paymentUuid,
+            UUID purchaseUuid,
             String receiverMessengerId
     ) {
-        this.paymentUuid = paymentUuid;
+        this.purchaseUuid = purchaseUuid;
         this.receiverMessengerId = receiverMessengerId;
     }
 
